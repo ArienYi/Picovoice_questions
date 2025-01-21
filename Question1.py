@@ -1,5 +1,6 @@
 from typing import Sequence
 import random
+
 '''
 Question 1: The probability of rain on a given calendar day in Vancouver is p[i], where i is the day's index.
 For example, p[0] is the probability of rain on January 1st , and p[10] is the probability of precipitation on 
@@ -13,6 +14,8 @@ Dynamic Programming Approach
 Time Complexity: O(num_of_days^2)
 Space Complexity: O(num_of_days^2)
 '''
+
+
 def prob_rain_more_than_n_dp(p: Sequence[float], n: int) -> float:
     num_of_days = len(p)
     # initialize the dp table
@@ -30,7 +33,6 @@ def prob_rain_more_than_n_dp(p: Sequence[float], n: int) -> float:
             # number of rainy day j stays the same with i-1
             dp[i][j] = dp[i - 1][j] * (1 - p[i - 1])
             if j > 0:
-
                 # case of the day i is rainy
                 # number of rainy day becomes j, so we use j-1 among the first i-1 days
                 dp[i][j] += dp[i - 1][j - 1] * p[i - 1]
@@ -39,11 +41,14 @@ def prob_rain_more_than_n_dp(p: Sequence[float], n: int) -> float:
     res = sum(dp[num_of_days][j] for j in range(n + 1, num_of_days))
     return res
 
+
 '''
 Monte Carlo Approach
 Time Complexity: O(num_simulations * num_of_days)
 Space Complexity: O(1)
 '''
+
+
 def prob_rain_more_than_n_monte_carlo(p: Sequence[float], n: int, num_of_simulations: int = 1e5) -> float:
     num_of_days = len(p)
     # Count how many simulations end up with > n rainy days
@@ -62,6 +67,7 @@ def prob_rain_more_than_n_monte_carlo(p: Sequence[float], n: int, num_of_simulat
 
     # The estimate is how many simulations had > n rainy days, divided by total simulations
     return counter / num_of_simulations
+
 
 '''
 DP approach will provide the accurate solution for the problem, while Monte Carlo Approach provides an approximation.
