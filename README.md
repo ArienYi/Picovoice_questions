@@ -11,3 +11,6 @@ Question 2 was implemented in python with two DFS based approaches.
 
 ## Question3_array.c
 Question 3 was implemented in C, with array based hash table approach.
+Please run:
+```bash
+Your/Path/To/Question3_a <filename> <n> 
