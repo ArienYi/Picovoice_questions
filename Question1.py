@@ -1,5 +1,5 @@
 from typing import Sequence
-
+import random
 '''
 Question 1: The probability of rain on a given calendar day in Vancouver is p[i], where i is the day's index.
 For example, p[0] is the probability of rain on January 1st , and p[10] is the probability of precipitation on 
@@ -39,3 +39,32 @@ def prob_rain_more_than_n_dp(p: Sequence[float], n: int) -> float:
     res = sum(dp[num_of_days][j] for j in range(n + 1, num_of_days))
     return res
 
+'''
+Monte Carlo Approach
+Time Complexity: O(num_simulations * num_of_days)
+Space Complexity: O(1)
+'''
+def prob_rain_more_than_n_monte_carlo(p: Sequence[float], n: int, num_of_simulations: int = 1e5) -> float:
+    num_of_days = len(p)
+    # Count how many simulations end up with > n rainy days
+    counter = 0
+
+    for _ in range(num_of_simulations):
+        # number of rainy days in one simulation
+        num_of_rainy = 0
+        for day in range(num_of_days):
+            # generate a float within [0,1)
+            # if that float falls between [0, p[day]), we claim that day is rainy
+            if random.random() <= p[day]:
+                num_of_rainy += 1
+        if num_of_rainy > n:
+            counter += 1
+
+    # The estimate is how many simulations had > n rainy days, divided by total simulations
+    return counter / num_of_simulations
+
+'''
+DP approach will provide the accurate solution for the problem, while Monte Carlo Approach provides an approximation.
+However, the later one will be closer and closer to the ground truth with higher num_of_simulations.
+Meanwhile, it introduces O(1) space complexity, which is much better than DP approach.
+'''
